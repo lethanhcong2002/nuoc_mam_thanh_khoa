@@ -1,0 +1,14 @@
+﻿@model IEnumerable<TrangwebnuocmamThanhKhoa.Models.News>
+<div class="newfeed">
+    <h4>TIN XEM NHIỀU </h4>
+    @foreach (var item in Model)
+    {
+        <div class="p1">
+            <img src="@item.CoverImage" alt="Image 1 description">
+            <div>
+                <a href="@Url.Action("NewsDetail", "News", new { id = item.Id, metatitle = item.MetaTitle })" class="truncate-text" style="text-decoration: none; color: black;">@item.Title</a>
+                <p class="date-text">@Convert.ToDateTime(item.CreateAt).ToString("dd/MM/yyyy")</p>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,268 @@
+﻿@model TrangwebnuocmamThanhKhoa.Models.PdDetail1
+@using TrangwebnuocmamThanhKhoa.Models;
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.User = Session["User"] as User;
+}
+<link href="~/MyCss/productDetail.css" rel="stylesheet" />
+<link href="~/MyCss/alertcss.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-lg-6 col-12">
+        @*Slider to*@
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="10000" style="background: #f8f9fa;">
+            <div class="carousel-inner">
+                @for (int i = 0; i < Model.Images.Count; i++)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <img src="@Model.Images[i]" class="d-block w-100 carousel-image" alt="..." />
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        @*Slider nhỏ*@
+        <div class="thumbnail-container mt-3">
+            @for (int i = 0; i < Model.Images.Count; i++)
+            {
+                <img src="@Model.Images[i]" class="img-thumbnail thumb" data-bs-target="#carouselExample" data-bs-slide-to="@i" />
+            }
+        </div>
+    </div>
+
+    @*Thông tin sơ bộ*@
+    <div class="col-lg-6 col-12 mt-4 mt-lg-0">
+        <div class="product-details">
+            <h2 class="product-title">@Model.Name</h2>
+            <div class="product-bottles my-3">
+                <label>Chọn loại:</label>
+                <div class="btn-group d-flex" role="group">
+
+                    @for (int i = 0; i < Model.ProductListDetails.Count; i++)
+                    {
+                        var item = Model.ProductListDetails[i];
+                        <input type="radio" class="btn-check" name="bottle" id="bottle+@i" autocomplete="off" value="@item.Gia" data-price="@item.Gia" @(i == 0 ? "checked" : "")>
+                        <label class="btn bottle-label" for="bottle+@i">
+                            @item.Name
+                        </label>
+                    }
+
+                </div>
+            </div>
+
+            <p>Giá: <span class="product-price" id="productPrice">@Model.ProductListDetails[0].Gia VNĐ</span></p>
+
+            @*Ô chọn số lượng*@
+            <div class="product-quantity my-3 d-flex align-items-center">
+                <label class="me-3 mb-0">Số lượng:</label>
+                <div class="input-group quantity-input">
+                    <button class="btn btn-outline-secondary" type="button" id="button-minus">-</button>
+                    <input type="number" class="form-control form-control-sm" id="quantity" value="1" min="1">
+                    <button class="btn btn-outline-secondary" type="button" id="button-plus">+</button>
+                </div>
+            </div>
+
+            @*2 nút thêm và mua*@
+            <div class="product-actions my-3 d-flex flex-wrap">
+                <button class="btn btn-custom btn-add-to-cart mb-2 mb-lg-0" id="addToCart" data-id="@Model.Id">THÊM VÀO GIỎ</button>
+            </div>
+
+            @*Thấy ko cần thiết thì có thể bỏ *@
+            <div class="product-info my-3">
+                <ul>
+                    <li><span class="fw-bold">Xuất xứ:</span> Việt Nam</li>
+                    <li><span class="fw-bold">Dung tích:</span> 500ml</li>
+                    <li><span class="fw-bold">Loại:</span> Nước mắm nguyên chất</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    @*Mô tả sản phẩm*@
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body" style="word-break: normal; white-space: normal;">
+                <h5 class="card-title">Chi tiết sản phẩm:</h5>
+
+                <span class="fw-bold">Thành phần:</span>
+                <ul class="card-text" id="productDescription" style="font-size: 14px; ">
+                    <li>Dung tích: Đạm tổng số</li>
+                    <li> Đạm amin (acid amin)</li>
+                    <li> Đạm amon</li>
+                    <li> Đạm amin (acid amin)</li>
+                    <li> Vitamin B1, B2, B12, PP</li>
+                    <li>Cá cơm & muối NaCl </li>
+                </ul>
+
+                <span class="fw-bold"> Cách sử dụng:</span>
+                <ul class="card-text" id="productDescription" style="font-size: 14px; ">
+                    <li>Sử dụng nguyên chất để chấm thịt, cá, rau, đậu… </li>
+                    <li> Ướp, chiên, xào, gia vị thức ăn</li>
+                    <li> Khuyến cáo sử dụng trong trong vòng 1 tháng kể từ ngày mở nắp.</li>
+                    <li> Sau khi sử dụng phải đậy kín. </li>
+                    <li> Bảo quản: Nơi sạch sẽ, khô ráo, thoáng mát, tránh ánh nắng trực tiếp, mùi mạnh hoặc các loại hoá chất.</li>
+                    <li> Hạn sử dụng: 02 năm kể từ ngày sản xuất</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@*Sản phẩm khác*@
+@Html.Action("OtherProduct", "Products")
+
+<script>
+    $(document).ready(function () {
+        $('.thumb').eq(0).addClass('active');
+
+        $('#carouselExample').on('slide.bs.carousel', function (event) {
+            var index = $(event.relatedTarget).index();
+            $('.thumb').removeClass('active');
+            $('.thumb').eq(index).addClass('active');
+        });
+
+        $('.thumb').on('click', function () {
+            var slideIndex = $(this).data('bs-slide-to');
+            $('#carouselExample').carousel(slideIndex);
+        });
+        $('#button-plus').click(function () {
+            var value = parseInt($('#quantity').val());
+            $('#quantity').val(value + 1);
+            updateQuantityButtons();
+        });
+
+        $('#button-minus').click(function () {
+            var value = parseInt($('#quantity').val());
+            if (value > 1) {
+                $('#quantity').val(value - 1);
+                updateQuantityButtons();
+            }
+        });
+
+        $('#quantity').on('input', function () {
+            updateQuantityButtons();
+        });
+
+        $('#quantity').on('blur', function () {
+            var value = parseInt($(this).val());
+            if (isNaN(value) || value < 1) {
+                $(this).val(1);
+            }
+            updateQuantityButtons();
+        });
+
+        function updateQuantityButtons() {
+            var value = parseInt($('#quantity').val());
+            if (value <= 1) {
+                $('#button-minus').prop('disabled', true);
+            } else {
+                $('#button-minus').prop('disabled', false);
+            }
+        }
+
+        $('#addToCart').click(function () {
+            var productId = $(this).data('id');
+            var productName = $('.product-title').text();
+            var selectedLabel = $('input[name="bottle"]:checked').next('label');
+            var productType = selectedLabel.text().trim();
+            var productPrice = $('#productPrice').text().replace(' VNĐ', '').replace(/\./g, '');
+            var quantity = $('#quantity').val();
+
+            var product = {
+                ProductId: productId,
+                ProductName: productName,
+                PLName: productType,
+                ProductPrice: parseInt(productPrice, 10),
+                Quantity: parseInt(quantity, 10)
+            };
+
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            var productIndex = cart.findIndex(item => item.ProductId === productId && item.PLName === productType);
+
+            if (productIndex > -1) {
+                cart[productIndex].Quantity += product.Quantity;
+            } else {
+                cart.push(product);
+            }
+
+            var user = @Html.Raw(Json.Encode(ViewBag.User));
+
+            if (user) {
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        ProductId: product.ProductId,
+                        PLName: product.PLName,
+                        Quantity: product.Quantity,
+                        CustomerId: user.Id
+                    }),
+                    success: function (response) {
+                        if (response.success) {
+                            Toastify({
+                                text: response.message,
+                                duration: 1500,
+                                gravity: "top",
+                                position: 'right',
+                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                            }).showToast();
+                            $('#quantity').val(1);
+                            updateQuantityButtons();
+                        } else {
+                            Toastify({
+                                text: "Đã xảy ra lỗi: " + response.message,
+                                duration: 1500,
+                                gravity: "top",
+                                position: 'right',
+                                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                            }).showToast();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Lỗi khi lưu dữ liệu vào cơ sở dữ liệu:', error);
+                    }
+                });
+            } else {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                Toastify({
+                    text: "Thêm vào giỏ hàng thành công",
+                    duration: 1500,
+                    gravity: "top",
+                    position: 'right',
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
+                $('#quantity').val(1);
+                updateQuantityButtons(); 
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const radios = document.querySelectorAll('input[name="bottle"]');
+        const priceElement = document.getElementById("productPrice");
+
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function updatePrice() {
+            const selectedPrice = document.querySelector('input[name="bottle"]:checked').getAttribute("data-price");
+            priceElement.textContent = `${formatPrice(selectedPrice)} VNĐ`;
+        }
+
+        radios.forEach(radio => {
+            radio.addEventListener("change", updatePrice);
+        });
+
+        updatePrice();
+    });
+</script>

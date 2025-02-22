@@ -1,0 +1,84 @@
+﻿.card-detail {
+    max-width: 600px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+    .card-detail h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+        position: relative;
+    }
+
+        .card-detail h2::after {
+            content: "";
+            display: block;
+            width: 40%;
+            height: 1px;
+            background-color: #ddd;
+            margin: 10px auto 0;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -10px;
+        }
+
+    .card-detail label {
+        display: block;
+        margin: 15px 0 5px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .card-detail input,
+    .card-detail textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+#address {
+    height: auto;
+    white-space: normal;
+    overflow: auto;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.detail-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+#editButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#saveButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    display: none;
+}

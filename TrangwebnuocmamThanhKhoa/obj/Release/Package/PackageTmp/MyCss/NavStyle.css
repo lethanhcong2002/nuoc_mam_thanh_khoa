@@ -1,0 +1,17 @@
+﻿@media (max-width: 576px) {
+    .dropdown-menu.show {
+        left: -130px;
+        top: 30px;
+    }
+}
+
+.dropdown-menu {
+    width: 300px;
+}
+
+.form-inline .form-control {
+    display: inline-block;
+    width: calc(100% - 50px); /* Adjust width considering the button size */
+}
+
+

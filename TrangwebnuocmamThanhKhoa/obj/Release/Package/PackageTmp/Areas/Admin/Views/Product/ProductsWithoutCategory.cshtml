@@ -1,0 +1,129 @@
+﻿@model IEnumerable<TrangwebnuocmamThanhKhoa.Models.Product>
+
+@{
+    ViewBag.Title = "Sản phẩm không thuộc danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="card-title">Sản phẩm không thuộc danh mục</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th>Ẩn/Hiện</th>
+                        <th scope="col">Các chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                <input type="checkbox" class="product-status-checkbox" id="product_@item.Id" data-id="@item.Id" @(item.Status ? "checked" : "") style="width:30px;height:30px;position:initial" />
+                                <label for="product_@item.Id"></label>
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" href="@Url.Action("EditProduct", new { id = item.Id, idl = item.CategoryId })">Cập nhật</a>
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete('@Url.Action("DeleteProduct", "Product", new { id = item.Id })')">Xóa</button>
+                                <button type="button" class="btn btn-info" onclick="showRestoreModal('@item.Id')">Khôi phục</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal để chọn danh mục và khôi phục -->
+<div id="restoreModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Khôi phục danh mục cho sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="restoreForm" method="post" action="@Url.Action("RestoreProductCategory", "Product")">
+                    <input type="hidden" name="productId" id="restoreProductId" />
+                    <div class="form-group">
+                        <label for="categorySelect">Chọn danh mục</label>
+                        <select class="form-control" id="categorySelect" name="categoryId">
+                            @foreach (var category in ViewBag.Categories as IEnumerable<TrangwebnuocmamThanhKhoa.Models.Category>)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(url) {
+        if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+            window.location.href = url;
+        }
+    }
+
+    function showRestoreModal(productId) {
+        $('#restoreProductId').val(productId);
+        $('#restoreModal').modal('show');
+    }
+
+    $(document).ready(function () {
+        var restoreSuccess = '@Html.Raw(TempData["RestoreSuccess"] ?? "")';
+        if (restoreSuccess) {
+            alert(restoreSuccess);
+        }
+    });
+
+    $('.product-status-checkbox').on('change', function () {
+        var id = $(this).data('id');
+        var isChecked = $(this).is(':checked');
+        $.ajax({
+            url: '@Url.Action("UpdateStatusProduct", "Product")',
+            type: 'POST',
+            data: { id: id, isChecked: isChecked },
+            success: function (response) {
+                if (response.success) {
+                    Toastify({
+                        text: response.message,
+                        duration: 1500,
+                        gravity: "top",
+                        position: 'right',
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }).showToast();
+                } else {
+                    Toastify({
+                        text: "Đã xảy ra lỗi: " + response.message,
+                        duration: 1500,
+                        gravity: "top",
+                        position: 'right',
+                        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                    }).showToast();
+                }
+            },
+            error: function () {
+                alert("Đã xảy ra lỗi khi gửi yêu cầu.");
+            }
+        });
+    });
+</script>
+
+<script src="~/Areas/Admin/Data/pg_all.js"></script>
+<link href="~/MyCss/ListCategory.css" rel="stylesheet" />

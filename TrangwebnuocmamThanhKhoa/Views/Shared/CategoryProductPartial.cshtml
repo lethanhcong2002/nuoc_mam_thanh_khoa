@@ -1,0 +1,38 @@
+﻿@model List<TrangwebnuocmamThanhKhoa.Models.Category>
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 sidebar-category">
+    <h5 class="title-header">
+        DANH MỤC
+        <span class="line"></span>
+    </h5>
+    @foreach (var item in Model)
+    {
+        <label class="product-category">
+            @item.Name
+            <input type="radio" checked="checked" name="radio" value="@item.Id">
+            <span class="checkmark"></span>
+        </label>
+    }
+</div>
+
+<script type="text/javascript">
+    function filterProductsByCategory(categoryId) {
+    $.ajax({
+        url: '@Url.Action("FilterByCategory", "Products")',
+        type: 'GET',
+        data: { categoryId: categoryId },
+        success: function (result) {
+            $("#product-list-container").html(result);
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX Error: ' + status + ' ' + error);
+        }
+    });
+    }
+    $('input[name="radio"]').prop('checked', false);
+    $('.product-category input[type="radio"]').on('change', function () {
+        var categoryId = $(this).val();
+        console.log("Selected Category ID: " + categoryId); // Debugging
+        filterProductsByCategory(categoryId);
+    });
+</script>

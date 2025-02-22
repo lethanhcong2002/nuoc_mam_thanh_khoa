@@ -1,0 +1,102 @@
+﻿.divider {
+    position: relative;
+    padding-left: 15px;
+}
+
+    .divider::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 1px;
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+@media (max-width: 991.98px) {
+    .divider::before {
+        content: none;
+    }
+}
+
+.bottom-divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+}
+
+.custom-shadow {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.product-table {
+    width: 100%;
+    min-width: 600px;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+    .product-table th,
+    .product-table td {
+        padding: 8px;
+        border: none;
+        text-align: left;
+    }
+
+    .product-table thead {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .product-table img {
+        max-width: 80px;
+        max-height: 80px;
+        margin-right: 10px;
+    }
+
+
+.total-section {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+    .total-section span {
+        font-weight: bold;
+    }
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+}
+
+    .quantity-controls button {
+        cursor: pointer;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        margin: 0 5px;
+        border-radius: 3px;
+        font-size: 1rem;
+    }
+
+.quantity-input {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+}
+
+.delete-icon {
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 1.3rem;
+    text-decoration: none;
+}

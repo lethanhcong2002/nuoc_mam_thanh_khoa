@@ -1,0 +1,79 @@
+﻿@model TrangwebnuocmamThanhKhoa.Models.User
+
+@{
+    ViewBag.Title = "DetailsUser";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var currentUser = Session["Admin"] as TrangwebnuocmamThanhKhoa.Models.User;
+}
+
+<div>
+    <h4>Chi tiết thông tin người dùng</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Họ và Tên
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Tên tài khoản
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Account)
+        </dd>
+
+        <dt>
+            Số điện thoại
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            Địa chỉ
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            Ngày tạo
+        </dt>
+        <dd>
+            @Model.CreateAt.ToString("dd-MM-yyyy HH:mm:ss")
+        </dd>
+
+        <dt>
+            Ảnh đại diện
+        </dt>
+        @if (string.IsNullOrEmpty(Model.Avt))
+        {
+            <dd style="color:red">
+                Ảnh đại diện chưa được cập nhật!
+            </dd>
+        }
+        else
+        {
+            <dd>
+                <img src="@Url.Content(Model.Avt)" style="width:250px; height:250px" />
+            </dd>
+        }
+    </dl>
+</div>
+
+<p>
+    @if (currentUser != null && currentUser.Id == Model.Id)
+    {
+        <a class="btn btn-info" href="@Url.Action("EditUser", new { id = Model.Id })">Chỉnh sửa</a>
+    }
+    <a class="btn btn-warning" href="@Url.Action("ListUserAccount", "AccountUser")">Trở về</a>
+</p>

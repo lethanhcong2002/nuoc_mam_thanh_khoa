@@ -1,0 +1,103 @@
+﻿@model TrangwebnuocmamThanhKhoa.Models.News
+
+@{
+    ViewBag.Title = "NewsDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .news-container {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .news-title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .news-meta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+        .news-meta i {
+            margin-right: 5px;
+        }
+
+        .news-meta p {
+            margin: 0;
+            padding: 0 10px;
+            display: inline;
+        }
+
+    .news-summary {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+        font-style: italic;
+        color: #666;
+    }
+
+    .news-content {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+        font-size: 1.1rem;
+        font-weight: normal;
+        color: #333;
+        line-height: 1.6;
+    }
+
+        .news-content h3, .news-summary h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #A0522D /*#8B4513*/;
+        }
+
+        .news-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+        }
+</style>
+
+<main>
+    <div class="container news-container">
+        <h2 class="news-title">@Model.Title</h2>
+
+        <div class="news-meta">
+            <i class="la la-history"></i>
+            <p>@Convert.ToDateTime(Model.CreateAt).ToString("dd/MM/yyyy")</p>
+            <p><strong>Lượt xem:</strong> @Model.Views</p>
+        </div>
+
+        <div class="news-summary">
+            <h3><i class="la la-info-circle"></i> Tóm tắt:</h3>
+            <p>@Html.Raw(Model.Summary)</p>
+        </div>
+
+        <div class="news-content">
+            <h3><i class="la la-file-text"></i> Nội dung chi tiết:</h3>
+            <p>@Html.Raw(Model.Content)</p>
+        </div>
+    </div>
+</main>
+

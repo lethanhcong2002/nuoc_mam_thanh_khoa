@@ -1,0 +1,351 @@
+﻿@model TrangwebnuocmamThanhKhoa.Models.Category
+
+@{
+    ViewBag.Title = "EditCategory";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3>Chỉnh sửa tên loại nước mắm</h3>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, "Tên loại", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Sửa" class="btn btn-success" />
+                <a class="btn btn-warning" href="@Url.Action("ListCategory", "Product")">Trở về</a>
+            </div>
+        </div>
+    </div>
+}
+<hr />
+<h3>Danh sách nước mắm theo loại:</h3>
+<p>
+    <button type="button" class="btn btn-info"
+            onclick="location.href='@Url.Action("CreateProduct","Product", new { idl = @ViewBag.idcategory})'">
+        Tạo Mới
+    </button>
+
+</p>
+@if (ViewBag.listproduct != null && ViewBag.listproduct.Count > 0)
+{
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Tên nước mắm
+                    </th>
+                    <th>
+                        Hình ảnh
+                    </th>
+                    <th>
+                        Trạng thái
+                    </th>
+                    <th>
+                        Giảm giá
+                    </th>
+                    <th>
+                        Hành động
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="main_pg">
+                @foreach (var loai in ViewBag.listproduct)
+                {
+                    <tr class="data_pg">
+                        <td>
+                            @loai.Name
+                        </td>
+                        @if (string.IsNullOrEmpty(loai.Images))
+                        {
+                            <td style="color:red">
+                                Ảnh chưa được cập nhật!
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @{ // Tách chuỗi hình ảnh và lấy hình ảnh đầu tiên
+                                    var images = loai.Images.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                    var firstImage = images.Length > 0 ? images[0] : null; }
+                                @if (firstImage != null)
+                                {
+                                    <img src="@firstImage" style="width:250px; height:150px" />}
+                            </td>
+                        }
+                        <td>
+                            <input type="checkbox" class="product-status-checkbox" id="@loai.Id" data-id="@loai.Id" @(loai.Status ? "checked" : "") style="width:30px;height:30px;position:initial" />
+                            <label for="@loai.Id"></label>
+                        </td>
+                        <td>
+                            @loai.SaleOff
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("EditProduct","Product", new { id = loai.Id,idl = loai.CategoryId})'">Sửa</button>
+                            <button type="button" class="btn btn-warning" onclick="confirmDelete('@Url.Action("DeleteProduct","Product", new { id = loai.Id, idl = loai.CategoryId })')">Xóa</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-product-id="@loai.Id">Xem Chi Tiết</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <ul class="pagination pg-primary d-flex justify-content-center">
+    </ul>
+}
+else
+{
+    <p>Không có sản phẩm nước mắm nào thuộc loại này.</p>
+}
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm danh mục sản phẩm:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <input type="text" id="productName" class="form-control" placeholder="Tên">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" id="productVolume" class="form-control" placeholder="Thể tích">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" id="productPrice" class="form-control" placeholder="Giá tiền">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-success" style="text-align: center;" onclick="addProduct()">Thêm</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div id="productListContainer" style="width: 100%; text-align: center;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#exampleModal').on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget); // Button that triggered the modal
+            var productId = button.data('product-id'); // Extract info from data-* attributes
+            $('#exampleModal').data('product-id', productId); // Store productId in modal data
+
+            loadProductList(productId);
+        });
+
+        $('#productModal').on('hidden.bs.modal', function () {
+            // Clear the product list container when the modal is closed
+            $('#productListContainer').empty();
+        });
+    });
+
+    function loadProductList(productId) {
+        $.ajax({
+            url: '@Url.Action("GetProductList", "Product")',
+            type: 'GET',
+            data: { productId: productId },
+            success: function (response) {
+                if (response.success) {
+                    var productList = response.data;
+                    var productListContainer = $('#productListContainer');
+                    productListContainer.empty(); // Clear previous content
+
+                    var table = $('<table>').addClass('table');
+
+                    var header = $('<thead>');
+                    var headerRow = $('<tr>').html('<th>Tên</th><th>Thể tích</th><th>Giá</th><th>Trạng thái</th><th>Hành động</th>');
+                    header.append(headerRow);
+                    table.append(header);
+
+                    var body = $('<tbody>');
+
+                    productList.forEach(function (product) {
+                        var checked = product.Status ? 'checked' : '';
+                        var row = $('<tr>').html(`
+                            <td>${product.Name}</td>
+                            <td>${product.Thetich}</td>
+                            <td>${product.Gia}</td>
+                            <td>
+                                <input type="checkbox" class="productchild-status-checkbox" id="${product.Name}" data-id="${product.Name}" ${checked} style="width:30px;height:30px;position:initial" />
+                                <label for="${product.Name}"></label>
+                            </td>
+                            <td><button type="button" class="btn btn-warning" onclick="removeProduct('${product.Name}', ${productId})">Xóa</button></td>
+                        `);
+                        body.append(row);
+                    });
+
+                    table.append(body);
+                    productListContainer.append(table);
+
+                    $('.productchild-status-checkbox').on('click', function () {
+                        var id = productId;
+                        var Name = $(this).data('id');
+                        var isChecked = $(this).is(':checked');
+                        $.ajax({
+                            url: '@Url.Action("UpdateStatusProductChild", "Product")',
+                            type: 'POST',
+                            data: { id: id, Name: Name, isChecked: isChecked },
+                            success: function (response) {
+                                if (response.success) {
+                                    Toastify({
+                                        text: response.message,
+                                        duration: 1500, // Hiển thị trong 1.5 giây
+                                        gravity: "top", // Hiển thị ở phía trên
+                                        position: 'right', // Hiển thị ở phía bên phải
+                                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                    }).showToast();
+                                } else {
+                                    Toastify({
+                                        text: "Đã xảy ra lỗi: " + response.message,
+                                        duration: 1500,
+                                        gravity: "top",
+                                        position: 'right',
+                                        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                                    }).showToast();
+                                }
+                            },
+                            error: function () {
+                                alert("Đã xảy ra lỗi khi gửi yêu cầu.");
+                            }
+                        });
+                    });
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert('Đã xảy ra lỗi khi lấy danh sách sản phẩm.');
+            }
+        });
+    }
+
+
+    function addProduct() {
+        var productName = $('#productName').val();
+        var productVolume = $('#productVolume').val();
+        var productPrice = $('#productPrice').val();
+        var productId = $('#exampleModal').data('product-id'); // Get the productId from the modal data
+
+        if (productVolume && productPrice && productId) {
+            $.ajax({
+                url: '@Url.Action("AddProductToList", "Product")',
+                type: 'POST',
+                data: {
+                    productId: productId,
+                    Name: productName,
+                    Thetich: productVolume,
+                    Gia: productPrice
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Thêm thành công!');
+                        $('#productName').val('');
+                        $('#productVolume').val('');
+                        $('#productPrice').val('');
+                        loadProductList(productId); // Reload the product list
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while adding the product.');
+                }
+            });
+        } else {
+            alert('Vui lòng điền đầy đủ thông tin.');
+        }
+    }
+
+    function removeProduct(productName, productId) {
+        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
+            $.ajax({
+                url: '@Url.Action("RemoveProductFromList", "Product")',
+                type: 'POST',
+                data: {
+                    productId: productId,
+                    Name: productName
+                },
+                success: function (response) {
+                    if (response.success) {
+                        loadProductList(productId);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while removing the product.');
+                }
+            });
+        }
+    }
+
+</script>
+
+
+
+<script>
+        function confirmDelete(url) {
+            if (confirm('Bạn có chắc muốn xóa sản phẩm nước mắm này? ')) {
+                window.location.href = url;
+            }
+        }
+        $(document).ready(function () {
+            $('.product-status-checkbox').on('click', function () {
+            var id = $(this).data('id');
+            var isChecked = $(this).is(':checked');
+            $.ajax({
+                url: '@Url.Action("UpdateStatusProduct", "Product")',
+                type: 'POST',
+                data: { id: id, isChecked: isChecked },
+                success: function (response) {
+                    if (response.success) {
+                        Toastify({
+                            text: response.message,
+                            duration: 1500, // Hiển thị trong 3 giây
+                            gravity: "top", // Hiển thị ở phía trên
+                            position: 'right', // Hiển thị ở phía bên phải
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: "Đã xảy ra lỗi: " + response.message,
+                            duration: 1500,
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                        }).showToast();
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi gửi yêu cầu.");
+                }
+            });
+        });
+    });
+</script>
+<script src="~/Areas/Admin/Data/pg_all.js"></script>

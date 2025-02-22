@@ -1,0 +1,239 @@
+﻿@model TrangwebnuocmamThanhKhoa.Models.Invoice_Data
+
+@{
+    ViewBag.Title = "DetailInvoice";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .information-cart {
+        margin-bottom: 15px;
+    }
+
+    .input-cart {
+        margin-bottom: 10px;
+    }
+
+    .btn-cart {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .status-info {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .status-label {
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+        .status-label[data-status="0"] {
+            background-color: #ffc107; /* Màu vàng cho trạng thái 'Chờ xác nhận' */
+        }
+
+        .status-label[data-status="1"] {
+            background-color: #28a745; /* Màu xanh lá cho trạng thái 'Đã xác nhận' */
+        }
+
+        .status-label[data-status="-1"] {
+            background-color: #dc3545; /* Màu đỏ cho trạng thái 'Đã hủy' */
+        }
+</style>
+
+<div class="card custom-shadow">
+    <div class="row p-4">
+        <div class="col-lg-7">
+            <div>DANH SÁCH SẢN PHẨM</div>
+            <div class="bottom-divider"></div>
+            <div class="table-responsive">
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Loại</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.InvoiceDetails)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.ProductImages))
+                                    {
+                                        <img src="@item.ProductImages" alt="@item.ProductName" style="width: 100px; height: auto;">
+                                    }
+                                </td>
+                                <td>@item.ProductName</td>
+                                <td>@item.ProductList</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.TotalPrice.ToString("N0").Replace(",", ".") VND</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="bottom-divider mt-3"></div>
+            <div class="total-section mt-3">
+                <div class="d-flex justify-content-between">
+                    <span>Tổng tiền</span>
+                    <span>@Model.InvoiceDetails.Sum(item => item.TotalPrice).ToString("N0").Replace(",", ".") VND</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 divider">
+            <div class="section-cart">
+                <div>THÔNG TIN ĐƠN HÀNG</div>
+                <div class="bottom-divider mb-3"></div>
+                <div class="order-info">
+                    <div class="information-cart">
+                        @Html.Hidden("CustomerId", Model.CustomerId)
+
+                        <div class="row row-10">
+                            <div class="input-cart col-md-6 padding-10">
+                                <p class="text-title">Tên khách hàng:</p>
+                                <p class="form-control text-sm">
+                                    @Model.CustomerName
+                                </p>
+                            </div>
+                            <div class="input-cart col-md-6 padding-10">
+                                <p class="text-title">Số điện thoại:</p>
+                                <p class="form-control text-sm">
+                                    @Model.CustomerPhone
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-cart col-12">
+                                <p class="text-title">Địa chỉ:</p>
+                                <p class="form-control text-sm">
+                                    @Model.CustomerAddress
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-cart col-12">
+                                <p class="text-title">Mã hóa đơn:</p>
+                                <p class="form-control text-sm">
+                                    @Model.Code
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-cart col-12">
+                                <p class="text-title">Ngày tạo hóa đơn:</p>
+                                <p class="form-control text-sm">
+                                    @Model.CreateAt.ToString("dd/MM/yyyy HH:mm")
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="status-info col-12">
+                                <p class="text-title">Trạng thái:</p>
+                                @if (Model.Status == 0)
+                                {
+                                    <span class="status-label" data-status="@Model.Status">Chờ xác nhận</span>
+                                }
+                                else if (Model.Status == 1)
+                                {
+                                    <span class="status-label" data-status="@Model.Status">Đã xác nhận</span>
+                                }
+                                else if (Model.Status == -1)
+                                {
+                                    <span class="status-label" data-status="@Model.Status">Đã hủy</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="orderButton" class="btn-cart btn btn-primary w-100 btn-block">Xác nhận</button>
+                    <button id="orderCancelButton" class="btn-cart btn btn-danger w-100 btn-block">Hủy đơn hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var orderId = @Model.Id;
+        updateButtonStatus();
+    });
+    function confirmInvoice(orderId) {
+        $.ajax({
+            url: '@Url.Action("ConfirmInvoice", "Invoice")',
+            type: 'POST',
+            data: { orderId: orderId },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    window.location.href = '@Url.Action("InvoiceList", "Invoice")';
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+    }
+
+    function cancelOrder(orderId) {
+        $.ajax({
+            url: '@Url.Action("CancelOrder", "Invoice")',
+            type: 'POST',
+            data: { orderId: orderId },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    window.location.href = '@Url.Action("InvoiceList", "Invoice")';
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+    }
+
+    function updateButtonStatus() {
+        var isactive = @Model.Status;
+        var button = document.getElementById('orderButton');
+        var buttoncancel = document.getElementById('orderCancelButton');
+
+        if (isactive === 0) {
+            button.textContent = "Xác nhận đơn hàng";
+            button.className = "btn-cart btn btn-primary w-100 btn-block";
+            button.onclick = function() { confirmInvoice(@Model.Id); };
+
+            buttoncancel.textContent = "Hủy đơn hàng";
+            buttoncancel.className = "btn-cart btn btn-danger w-100 btn-block";
+            buttoncancel.onclick = function() { cancelOrder(@Model.Id); };
+        } else if (isactive === 1) {
+            button.textContent = "Đã xác nhận";
+            button.className = "btn-cart btn btn-success w-100 btn-block";
+            button.disabled = true;
+
+            buttoncancel.textContent = "Không thể hủy đơn hàng đã xác nhận";
+            button.className = "btn-cart btn btn-secondary w-100 btn-block";
+            button.disabled = true;
+        } else if (isactive === -1) {
+            button.textContent = "Xác nhận đơn hàng";
+            button.className = "btn-cart btn btn-primary w-100 btn-block";
+            button.disabled = true;
+
+            buttoncancel.textContent = "Đơn hàng đã bị hủy";
+            button.className = "btn-cart btn btn-danger w-100 btn-block";
+            button.disabled = true;
+        }
+    }
+</script>
+
+<link href="~/MyCss/shoppingCart.css" rel="stylesheet" />

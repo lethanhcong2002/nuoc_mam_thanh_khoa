@@ -1,0 +1,13 @@
+﻿<div class="newfeed2">
+    <h4>GÓC BẾP</h4>
+
+
+    @foreach (var item in Model)
+    {
+        <div class="p2">
+            <img src="@item.CoverImage" alt="Image 2 description">
+            <p>@item.Summary</p>
+            <a href="@Url.Action("NewsDetail", "News", new { id = item.Id, metatitle = item.MetaTitle })" style="color:red">Xem chi tiết</a>
+        </div>
+    }
+</div>

@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "RegisterCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/MyCss/registerForm.css" rel="stylesheet" />
+<div class="card p-4 register-form">
+    <h2 style="text-align: center; padding-bottom: 50px ">Đăng Ký Tài Khoản</h2>
+    @using (Html.BeginForm("RegisterCustomer", "CustomerAccount", FormMethod.Post, new { id = "registerForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group mb-4">
+                    <label for="fullName">Họ và Tên:</label>
+                    <input type="text" id="fullName" name="Name" class="form-control mw-100" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="phone">Số Điện Thoại:</label>
+                    <input type="tel" id="phone" name="Phone" class="form-control mw-100" required>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="form-group">
+                <label for="address">Địa Chỉ:</label>
+                <input type="text" id="address" class="form-control mw-100" name="Address" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group mb-4">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="Password" class="form-control mw-100" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="repeatPassword">Nhập lại mật khẩu:</label>
+                    <input type="password" id="repeatPassword" name="ConfirmPassword" class="form-control mw-100" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="form-group">
+                    <label for="tinh">Tỉnh: </label>
+                    <select id="tinh" class="form-control mw-100" name="Province" title="Chọn Tỉnh Thành">
+                        <option value="0">Tỉnh Thành</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="form-group">
+                    <label for="quan">Quận/Huyện: </label>
+                    <select id="quan" class="form-control mw-100" name="District" title="Chọn Quận Huyện">
+                        <option value="0">Quận Huyện</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="form-group">
+                    <label for="phuong">Phường/Xã: </label>
+                    <select class="form-control mw-100" id="phuong" name="Ward" title="Chọn Phường Xã">
+                        <option value="0">Phường Xã</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success">Tạo tài khoản</button>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        // Lấy tỉnh thành
+        $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+            if (data_tinh.error == 0) {
+                $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                    $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                });
+                $("#tinh").change(function (e) {
+                    var idtinh = $(this).val();
+                    // Lấy quận huyện
+                    $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                        if (data_quan.error == 0) {
+                            $("#quan").html('<option value="0">Quận Huyện</option>');
+                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                            $.each(data_quan.data, function (key_quan, val_quan) {
+                                $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                            });
+                            // Lấy phường xã
+                            $("#quan").change(function (e) {
+                                var idquan = $(this).val();
+                                $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                    if (data_phuong.error == 0) {
+                                        $("#phuong").html('<option value="0">Phường Xã</option>');
+                                        $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                            $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+
+        // Xử lý khi submit form
+        $("#registerForm").submit(function (event) {
+            // Lấy text từ select box
+            var provinceText = $("#tinh option:selected").text();
+            var districtText = $("#quan option:selected").text();
+            var wardText = $("#phuong option:selected").text();
+
+            // Đặt text vào các input ẩn để gửi đi
+            $("<input>").attr({
+                type: "hidden",
+                name: "ProvinceText",
+                value: provinceText
+            }).appendTo("#registerForm");
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "DistrictText",
+                value: districtText
+            }).appendTo("#registerForm");
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "WardText",
+                value: wardText
+            }).appendTo("#registerForm");
+        });
+    });
+</script>

@@ -1,0 +1,156 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\areas\\admin\\controllers\\invoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\areas\\admin\\controllers\\invoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\areas\\admin\\views\\invoice\\invoicelist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\areas\\admin\\views\\invoice\\invoicelist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\areas\\admin\\views\\new\\listnew.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\areas\\admin\\views\\new\\listnew.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\areas\\admin\\views\\product\\listcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\areas\\admin\\views\\product\\listcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\areas\\admin\\views\\shared\\_layoutadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\areas\\admin\\views\\shared\\_layoutadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\areas\\admin\\controllers\\loginaccountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\areas\\admin\\controllers\\loginaccountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|d:\\duan\\trangwebnuocmamthanhkhoa\\trangwebnuocmamthanhkhoa\\controllers\\newscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9634074C-0532-4B77-AD36-3BC983E87E5D}|TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa.csproj|solutionrelative:trangwebnuocmamthanhkhoa\\controllers\\newscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "InvoiceList.cshtml",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Invoice\\InvoiceList.cshtml",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Invoice\\InvoiceList.cshtml",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Invoice\\InvoiceList.cshtml",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Invoice\\InvoiceList.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-22T04:51:03.69Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ListNew.cshtml",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\New\\ListNew.cshtml",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\New\\ListNew.cshtml",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\New\\ListNew.cshtml",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\New\\ListNew.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAC4AAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-22T04:50:37.209Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ListCategory.cshtml",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Product\\ListCategory.cshtml",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Product\\ListCategory.cshtml",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Product\\ListCategory.cshtml",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Product\\ListCategory.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-22T04:46:49.29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_LayoutAdmin.cshtml",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACEAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-22T04:43:02.361Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LoginAccountController.cs",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\LoginAccountController.cs",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\LoginAccountController.cs",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\LoginAccountController.cs",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\LoginAccountController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAgwC4AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T04:41:30.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "NewsController.cs",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Controllers\\NewsController.cs",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Controllers\\NewsController.cs",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Controllers\\NewsController.cs",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Controllers\\NewsController.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAiwHMAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T04:27:09.861Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "InvoiceController.cs",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\InvoiceController.cs",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\InvoiceController.cs",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\InvoiceController.cs",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Areas\\Admin\\Controllers\\InvoiceController.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAswCgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T04:23:13.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "TrangwebnuocmamThanhKhoa\\Controllers\\CartController.cs",
+              "ToolTip": "D:\\DUAN\\TrangwebnuocmamThanhKhoa\\TrangwebnuocmamThanhKhoa\\Controllers\\CartController.cs",
+              "RelativeToolTip": "TrangwebnuocmamThanhKhoa\\Controllers\\CartController.cs",
+              "ViewState": "AgIAABgBAAAAAAAAAAAqwDIBAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T04:18:12.394Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+﻿@using TrangwebnuocmamThanhKhoa.Code;
+@using TrangwebnuocmamThanhKhoa.Models;
+@{
+    var user = Session["User"] as User;
+}
+<link href="~/MyCss/NavStyle.css" rel="stylesheet" />
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+        <img class="img-logo navbar-brand me-auto" src="~/Image/logo.png" />
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Nước mắm Thành Khoa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link mx-lg-2 @Html.IsActive("Home", "Index")" aria-current="page" href="@Url.Action("Index", "Home")">TRANG CHỦ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-lg-2 @Html.IsActive("Products", "ProductList,ProductDetail")" href="@Url.Action("ProductList","Products")">SẢN PHẨM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-lg-2 @Html.IsActive("Home", "About")" href="@Url.Action("About","Home")">CÂU CHUYỆN VỀ THÀNH KHOA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-lg-2 @Html.IsActive("News", "MainNews,NewsDetail")" href="@Url.Action("MainNews","News")">TIN TỨC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-lg-2 @Html.IsActive("Home","Contact")" href="@Url.Action("Contact","Home")">LIÊN HỆ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="dropdown">
+            <i class="la la-search" style="font-size: 24px; cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"></i>
+            <div class="dropdown-menu dropdown-menu-end p-4">
+                <form class="form-inline" action="@Url.Action("Search", "Products")" method="get">
+                    <div class="input-group w-100">
+                        <input type="text" class="form-control" name="query" placeholder="Search...">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="la la-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mx-3">&nbsp;</div>
+        @if (user != null)
+        {
+            <div class="dropdown">
+                <span data-bs-toggle="dropdown" style="cursor: pointer;">
+                    <i id="userIcon" class="la la-user" style="font-size: 24px;"></i> @user.Name
+                </span>
+                <ul class="list-unstyled mb-0 dropdown-menu dropdown-menu-end" style="width: auto; padding: 0;">
+                    <li style="padding: 0; margin: 0;">
+                        <a href="@Url.Action("DetailInforCustomer", "CustomerAccount", new {id = user.Id, metatitle = user.MetaTitle})" class="dropdown-item" style="white-space: nowrap; padding: 8px 32px 8px 16px;">Thông tin tài khoản</a>
+                    </li>
+                    <li style="padding: 0; margin: 0;">
+                        <a href="@Url.Action("Logout", "CustomerAccount")" class="dropdown-item" style="white-space: nowrap; padding: 8px 32px 8px 16px;">Đăng xuất</a>
+                    </li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <i id="userIcon" class="la la-user" style="font-size: 24px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#loginModal"></i>
+        }
+        <div class="mx-1">&nbsp;</div>
+        <div class="position-relative">
+            <a href="@Url.Action("ShoppingCart", "Home")" class="text-decoration-none text-body"><i class="la la-shopping-cart" style="font-size: 30px;"></i></a> @*Sửa lại màu khác để đồng đều với các icon khác*@
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+            </span>
+        </div>
+        <div class="mx-1">&nbsp;</div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Đăng nhập</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @using (Html.BeginForm("Login", "CustomerAccount", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-group mb-4">
+                        <label for="productQuantity">Số điện thoại</label>
+                        <input type="text" class="form-control" id="customerPhone" name="Phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="productQuantity">Mật khẩu</label>
+                        <input type="password" class="form-control" id="customerPassword" name="Password">
+                    </div>
+                    @* Thêm phần tử này để hiển thị thông báo lỗi *@
+                    <div id="loginError" class="text-danger mt-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Đăng nhập</button>
+
+                    <div style="display: inline-block;">
+                        <a href="@Url.Action("RegisterCustomer", "CustomerAccount")" class="create-account-link" style="margin-right: 10px;">Tạo tài khoản</a>
+                        <span style="font-weight: bold; color: black;">|</span>
+                        <a href="@Url.Action("RegisterCustomer", "CustomerAccount")" class="create-account-link" style="margin-left: 10px;" data-bs-target="#forget-password" data-bs-toggle="modal">Quên mật khẩu</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="forget-password" aria-hidden="true" aria-labelledby="forget-password" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Quên mật khẩu</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="forgetPasswordForm" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-group mb-4">
+                        <label for="fgPhone">Số điện thoại</label>
+                        <input type="text" class="form-control" id="fgPhone" name="Phone">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="fgPassword">Mật khẩu</label>
+                        <input type="password" class="form-control" id="fgPassword" name="Password">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="reFgPassword">Nhập lại mật khẩu</label>
+                        <input type="password" class="form-control" id="reFgPassword" name="RePassword">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Đặt lại mật khẩu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-target="#loginModal" data-bs-toggle="modal">Quay lại đăng nhập</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateCartBadge(itemCount) {
+        const badge = document.querySelector('.position-absolute.top-0.start-100.translate-middle.badge');
+        if (badge) {
+            badge.textContent = itemCount;
+        }
+    }
+
+    function loadCartData() {
+        var user = @Html.Raw(Json.Encode(user));
+        if (user) {
+            fetch(`/Cart/GetCartItems?userId=${user.Id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const itemCount = data.length;
+                    updateCartBadge(itemCount);
+                })
+                .catch(error => console.error('Error fetching cart items:', error));
+        } else {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const itemCount = cart.length;
+            updateCartBadge(itemCount);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadCartData);
+
+    $(document).ready(function () {
+        $('#forgetPasswordForm').submit(function (event) {
+            event.preventDefault(); // Ngăn không cho form submit thông thường
+
+            $.ajax({
+                url: '/CustomerAccount/ForgetPassword', // Thay đổi URL tương ứng
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        $('#forget-password').modal('hide'); // Đóng modal sau khi thành công
+                        $('#loginModal').modal('show'); // Hiển thị lại modal đăng nhập
+                    } else {
+                        alert(response.message); // Hiển thị thông báo lỗi
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+
+@if (TempData["LoginError"] != null)
+{
+    <script>
+        $(document).ready(function() {
+            $('#loginModal').modal('show');
+
+            $('#loginError').text('@Html.Raw(TempData["LoginError"])');
+        });
+    </script>
+}
+<style>
+    .modal-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .modal-footer a {
+            margin-top: 10px;
+        }
+</style>

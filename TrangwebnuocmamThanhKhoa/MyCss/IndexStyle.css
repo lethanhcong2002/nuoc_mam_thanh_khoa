@@ -1,0 +1,111 @@
+﻿@media (max-width: 1080px) {
+    .container h3 {
+        font-size: 35px;
+    }
+}
+@media (max-width: 700px){
+    .container h3 {
+        font-size:25px;
+    }
+}
+
+.list-product {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px;
+    width: 100%
+}
+
+.product-card {
+    margin-top: 15px;
+}
+
+.product {
+    transition: box-shadow 0.3s, color 0.3s;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: #f8f9fa;
+}
+
+    .product h6, .product p {
+        padding: 5px;
+    }
+
+    .product:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+.product-name {
+    font-size: 18px;
+    margin-top: 10px;
+    height: 40px;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.product-price {
+    margin-top: 15px;
+}
+
+@media (max-width: 540px) {
+    .product-price {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-price {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .product-price {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 540px) {
+    .product-price {
+        margin-top: 30px;
+    }
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+    .button-container button {
+        padding: 10px 20px; /* Adjust padding to make it look better */
+        border: none;
+        border-radius: 20px;
+        background-color: #F4EF7D; /* Initial button color */
+        color: #172929;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-bottom: 20px;
+    }
+
+        .button-container button a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .button-container button:hover {
+            background-color: red; /* Hover button color */
+            color: white;
+        }

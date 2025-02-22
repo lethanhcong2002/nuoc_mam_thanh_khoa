@@ -1,0 +1,29 @@
+﻿@{ 
+    var searchQuery = ViewBag.SearchQuery as string;
+}
+<div class="row product-picker">
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 picker-select">
+        <select class="form-select" id="sort-by" name="sortBy">
+            <option selected disabled>Lọc theo</option>
+            <option value="newest">Mới nhất</option>
+            <option value="bestselling">Bán chạy nhất</option>
+        </select>
+    </div>
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 picker-select">
+        <select class="form-select" id="price-order" name="priceOrder">
+            <option selected disabled>Lọc theo giá</option>
+            <option value="asc1">Giá Thấp - Cao</option>
+            <option value="desc1">Giá Cao - Thấp</option>
+        </select>
+    </div>
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 picker-select">
+        <form id="search-form" class="form-inline">
+            <div class="input-group w-100">
+                <input type="text" id="search-keyword" class="form-control" placeholder="Nhập từ khóa..." value="@searchQuery">
+                <button type="button" class="btn btn-product-search" onclick="filterAndSortProducts()">
+                    <i class="la la-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

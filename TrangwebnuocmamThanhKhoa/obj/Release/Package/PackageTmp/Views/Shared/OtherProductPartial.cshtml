@@ -1,0 +1,24 @@
+﻿<div class="row mt-4">
+    <h5 class="card-title mb-2">Các sản phẩm khác</h5>
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-3 col-6">
+            <div class="top-product">
+                <img src="@item.Images" alt="@item.Name" class="top-product-image">
+                <h6 class="top-product-name text-center">@item.Name</h6>
+                <p class="top-product-price text-center">@item.Price.ToString("N0").Replace(",", ".") VNĐ</p>
+                <div class="button-container text-center">
+                    <button onclick="redirectToDetail('@item.Id', '@item.MetaTitle')">Xem chi tiết</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function redirectToDetail(Id, MetaTitle) {
+    var url = '@Url.Action("ProductDetail", "Products", new { metatitle = "__metatitle__", productId = "__productid__" }, null)';
+    url = url.replace("__metatitle__", MetaTitle).replace("__productid__", Id);
+    window.location.href = url;
+}
+</script>

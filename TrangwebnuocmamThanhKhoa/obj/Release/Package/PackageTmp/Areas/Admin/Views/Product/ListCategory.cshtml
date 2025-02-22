@@ -1,0 +1,94 @@
+﻿@model IEnumerable<TrangwebnuocmamThanhKhoa.Models.Category>
+
+@{
+    ViewBag.Title = "ListCategory";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="card-title">Danh sách loại nước mắm</div>
+            <a class="btn btn-success" href="@Url.Action("CreateCategory", "Product")">Thêm mới</a>
+        </div>
+        <a class="btn btn-link" href="@Url.Action("ProductsWithoutCategory", "Product")">Sản phẩm không thuộc loại sản phẩm</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"> Tên loại</th>
+                        <th scope="col"> Ẩn / Hiện </th>
+                        <th scope="col">Các chức năng</th>
+                    </tr>
+                </thead>
+                <tbody class="main_pg">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="data_pg">
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                <input type="checkbox" id="@item.Id" data-id="@item.Id" @(item.Status ? "checked" : "") style="width:30px;height:30px;position:initial" />
+                                <label for="@item.Id"></label>
+                            </td>
+                            <td>
+                                <div class="btn-group d-none d-md-inline-flex" role="group">
+                                    <a class="btn btn-danger" onclick="location.href='@Url.Action("EditCategory", new { id = item.Id })'">Cập nhật</a>
+                                    <button type="button" class="btn btn-warning" onclick="confirmDelete('@Url.Action("DeleteCategory", "Product", new { id = item.Id })')">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <ul class="pagination pg-primary d-flex justify-content-center">
+        </ul>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(url) {
+        if (confirm('Bạn có chắc muốn xóa loại nước mắm này? Lưu ý khi xóa, toàn bộ danh mục con của loại mước nắm này sẽ bị mất đi!')) {
+            window.location.href = url;
+        }
+    }
+
+    $(document).ready(function () {
+        $('input[type="checkbox"]').on('click', function () {
+            var id = $(this).data('id');
+            var isChecked = $(this).is(':checked');
+            $.ajax({
+                url: '@Url.Action("UpdateStatusCategory", "Product")',
+                type: 'POST',
+                data: { id: id, isChecked: isChecked },
+                success: function (response) {
+                    if (response.success) {
+                        Toastify({
+                            text: response.message,
+                            duration: 1500,
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: "Đã xảy ra lỗi: " + response.message,
+                            duration: 1500,
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                        }).showToast();
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi gửi yêu cầu.");
+                }
+            });
+        });
+    });
+</script>
+<script src="~/Areas/Admin/Data/pg_all.js"></script>
+<link href="~/MyCss/ListCategory.css" rel="stylesheet" />

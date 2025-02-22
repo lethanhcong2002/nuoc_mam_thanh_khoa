@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+<link href="~/MyCss/ContactStyle.css" rel="stylesheet" />
+<link href="~/MyCss/alertcss.css" rel="stylesheet" />
+<h3 style="text-align: center; font-weight: bold; margin-bottom: 20px;">LIÊN HỆ HỖ TRỢ</h3>
+<div class="row py-3 contact-form" style="border: 1px solid #ddd; border-radius: 15px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); background: #fff">
+    <div class="col-lg-6 col-12">
+        <img src="~/Image/img-contact.jpg" alt="Contact Image" style="width: 100%">
+        <div class="contact-details">
+            <p><i class="la la-map-marker"></i> 1, ấp Suối Đá, xã Dương Tơ, Tp.Phú Quốc</p>
+            <p><i class="la la-phone"></i> 0919636176 – 0918326476</p>
+            <p><i class="la la-envelope"></i> dntnthanhkhoapq@gmail.com</p>
+        </div>
+    </div>
+    <div class="col-lg-6 col-12">
+        <form id="contactForm">
+            <label for="name">Tên:</label>
+            <input type="text" id="name" name="name" placeholder="Nhập tên của bạn" required>
+
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Nhập địa chỉ email" required>
+
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address" name="address" placeholder="Nhập địa chỉ" required>
+
+            <label for="message">Nội dung liên hệ:</label>
+            <textarea id="message" name="message" placeholder="Nhập nội dung liên hệ" required></textarea>
+
+            <button id="submitButton" type="submit" style="position: relative;">
+                <span id="buttonText">Gửi</span>
+                <div id="spinner" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none;">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </button>
+
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('#contactForm').on('submit', function(event) {
+            event.preventDefault();
+
+            var formData = $(this).serialize();
+
+            $('#submitButton').prop('disabled', true);
+            $('#buttonText').hide();
+            $('#spinner').show();
+
+            $.ajax({
+                url: '@Url.Action("SendEmail", "Home")',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        Toastify({
+                            text: response.message,
+                            duration: 1500,
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                        $('#contactForm')[0].reset();
+                        $('#submitButton').prop('disabled', false);
+                        $('#buttonText').show();
+                        $('#spinner').hide();
+                    } else {
+                        Toastify({
+                            text: "Đã xảy ra lỗi: " + response.message,
+                            duration: 1500,
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                        }).showToast();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Lỗi khi lưu dữ liệu vào cơ sở dữ liệu:', error);
+                }
+            });
+        });
+    });
+</script>

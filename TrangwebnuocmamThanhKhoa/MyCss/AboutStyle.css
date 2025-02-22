@@ -1,0 +1,61 @@
+﻿.flex-container {
+    display: flex;
+    align-items: center;
+}
+
+    .flex-container img {
+        margin-right: 10px;
+    }
+/* CSS cho hình ảnh và văn bản */
+.responsive-img {
+    width: 100%;
+    height: auto;
+}
+
+.responsive-text {
+    align-self: center;
+    margin: 0;
+}
+
+/* CSS cho bố cục flex */
+.d-flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.align-items-center {
+    align-items: center;
+}
+.img2 {
+    height: 380px;
+}
+
+/* Điểm dừng cho các thiết bị nhỏ hơn */
+@media (max-width: 767.98px) {
+    .col-3, .col-9 {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .responsive-img {
+        width: 50%;
+        margin-left: 40px;
+    }
+
+    .responsive-text {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .d-flex {
+        justify-content: center;
+        flex-direction: column;
+    }
+    .img2 {
+        height: auto;
+    }
+}
+

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<TrangwebnuocmamThanhKhoa.Models.User>
+
+@{
+    ViewBag.Title = "ListUserAccount";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var currentUser = Session["Admin"] as TrangwebnuocmamThanhKhoa.Models.User;
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="card-title">Danh Sách Thông Tin Người Dùng</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="d-none d-md-table-cell">Họ và Tên</th>
+                        <th scope="col">Tên Tài Khoản</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Các chức năng</th>
+                    </tr>
+                </thead>
+                <tbody class="main_pg">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="data_pg">
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Account)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                            <td>
+                                <div class="btn-group d-none d-md-inline-flex" role="group">
+                                    <a class="btn btn-info" href="@Url.Action("DetailsUser", new { id = item.Id, metatitle = item.MetaTitle })">Xem chi tiết</a>
+                                    @if (currentUser != null && currentUser.Id == item.Id)
+                                    {
+                                        <a class="btn btn-danger" href="@Url.Action("EditUser", new { id = item.Id })">Cập nhật</a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-danger" disabled>Cập nhật</button>
+                                    }
+                                    <button class="btn btn-warning" onclick="confirmDelete('@Url.Action("DeleteUser", new { id = item.Id })')">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <ul class="pagination pg-primary d-flex justify-content-center">
+            <!-- Nội dung phân trang sẽ được thêm vào đây -->
+        </ul>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function confirmDelete(url) {
+        if (confirm('Bạn có muốn xóa người dùng này không?')) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = '@Url.Action("ListUserAccount", "AccountUser")';
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while processing your request.');
+                }
+            });
+        }
+    }
+</script>
+<script src="~/Areas/Admin/Data/pg_all.js"></script>

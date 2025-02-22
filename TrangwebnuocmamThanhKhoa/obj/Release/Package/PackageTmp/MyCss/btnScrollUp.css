@@ -1,0 +1,56 @@
+﻿.gotopbtn {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background: yellow;
+    bottom: 40px;
+    right: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+    color: black;
+    font-size: 22px;
+    border-radius: 50%;
+}
+
+.zalo-btn {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background: yellow;
+    bottom: 100px;
+    right: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+    color: black;
+    font-size: 22px;
+    border-radius: 50%;
+}
+
+.zalo-btn img{
+    width: 35px;
+    height: 35px;
+    margin-bottom: 8px;
+}
+
+.messenger-btn {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background: yellow;
+    bottom: 160px;
+    right: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+    color: black;
+    font-size: 22px;
+    border-radius: 50%;
+}
+
+    .messenger-btn img {
+        width: 35px;
+        height: 35px;
+        margin-bottom: 8px;
+    }   

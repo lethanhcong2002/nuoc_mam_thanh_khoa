@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TrangwebnuocmamThanhKhoa.Models.News>
+@{
+    ViewBag.Title = "MainNews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/MyCss/News/MainNewsStyle.css" rel="stylesheet" />
+<link href="~/MyCss/pagination.css" rel="stylesheet" />
+<main>
+    <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+            @*-----------Tin mới nhất----------*@
+            @Html.Action("NewsTop", "News")
+
+            @*-----------Góc Bếp----------*@
+            @Html.Action("NewsCorner", "News")
+        </div>
+
+
+        <div class="col-xl-8 col-lg-8 col-md-6 col-sm-12 col-12">
+            @*-----------Tin chính----------*@
+            <div class="mainnews">
+                @foreach (var item in Model)
+                {
+                    <div class="p3">
+                        <img src="@item.CoverImage" alt="Image 2 description">
+                        <p>@Convert.ToDateTime(item.CreateAt).ToString("dd/MM/yyyy")</p>
+                        <p>
+                            <a href="@Url.Action("NewsDetail", "News", new { id = item.Id, metatitle = item.MetaTitle})">
+                                @item.Title
+                            </a>
+                        </p>
+                        <p>
+                            @item.Summary
+                        </p>
+                    </div>
+                }
+                <nav class="pagination-outer" aria-label="Page navigation">
+                    <ul class="pagination">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/MyScript/pg_news.js"></script>

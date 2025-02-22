@@ -1,0 +1,41 @@
+﻿.order-card {
+    max-width: 100%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+    .order-card table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .order-card th, .order-card td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .order-card th {
+        background-color: #007bff;
+        color: white;
+    }
+
+.detail-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.detail-button-container {
+    display: flex;
+    justify-content: center;
+}

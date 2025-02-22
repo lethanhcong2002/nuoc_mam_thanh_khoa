@@ -1,0 +1,64 @@
+﻿.pagination-outer {
+    text-align: center;
+}
+
+.pagination {
+    margin-top: 20px;
+    justify-content: center;
+}
+
+    .pagination li a.page-link {
+        background-color: #D3171E;
+        border-color: #D3171E;
+        color: #fff;
+        margin: 10px;
+        border-radius: 30px;
+    }
+
+    .pagination li:first-child a.page-link,
+    .pagination li:last-child a.page-link {
+        font-weight: 500;
+        border-radius: 30px;
+    }
+
+    .pagination li a.page-link:hover,
+    .pagination li a.page-link:focus,
+    .pagination li.active a.page-link:hover,
+    .pagination li.active a.page-link {
+        color: #d31c4c;
+        background-color: transparent;
+        border-color: #d31c4c;
+    }
+
+    .pagination li a.page-link:before {
+        content: '';
+        background-color: #d31c4c;
+        border-radius: 50%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: -1;
+        transition: all 0.3s ease 0s;
+    }
+
+    .pagination li a.page-link:hover:before,
+    .pagination li a.page-link:focus:before,
+    .pagination li.active a.page-link:hover:before,
+    .pagination li.active a.page-link:before {
+        background-color: #F4EF7D;
+    }
+
+@media only screen and (max-width: 480px) {
+    .pagination {
+        font-size: 0;
+        display: inline-block;
+    }
+
+        .pagination li {
+            display: inline-block;
+            vertical-align: top;
+            margin: 10px 0;
+        }
+}

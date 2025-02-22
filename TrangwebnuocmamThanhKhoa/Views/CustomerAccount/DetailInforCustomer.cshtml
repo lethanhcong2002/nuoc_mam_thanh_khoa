@@ -1,0 +1,81 @@
+﻿@model TrangwebnuocmamThanhKhoa.Models.UserAccount
+@{
+    ViewBag.Title = "DetailInforCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/MyCss/detaiCAcss.css" rel="stylesheet" />
+<div class="card-detail">
+    <h2>Thông tin khách hàng</h2>
+    <form id="customerForm">
+        @Html.HiddenFor(model => model.Id)
+        <label for="name">Tên người dùng:</label>
+        <input type="text" id="name" name="name" value="@Model.Name" readonly>
+
+        <label for="address">Địa chỉ:</label>
+        <textarea id="address" name="address" rows="4" readonly>@Model.Address</textarea>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="@Model.Email" readonly>
+
+        <label for="phone">Số điện thoại liên hệ:</label>
+        <input type="tel" id="phone" name="phone" value="@Model.Phone" readonly>
+
+        <div class="detail-button-container">
+            <button type="button" id="editButton" onclick="enableInputs()">Thay đổi thông tin</button>
+            <button type="button" id="saveButton" onclick="saveChanges()">Lưu thông tin</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function enableInputs() {
+    document.querySelectorAll('.card-detail input, .card-detail textarea').forEach(input => input.readOnly = false);
+    document.getElementById('editButton').style.display = 'none';
+    document.getElementById('saveButton').style.display = 'block';
+}
+
+function disableInputs() {
+    document.querySelectorAll('.card-detail input, .card-detail textarea').forEach(input => input.readOnly = true);
+    document.getElementById('editButton').style.display = 'block';
+    document.getElementById('saveButton').style.display = 'none';
+}
+
+function saveChanges() {
+    var formData = {
+        id: $("#customerForm input[name='Id']").val(),
+        name: $("#name").val(),
+        address: $("#address").val(),
+        email: $("#email").val(),
+        phone: $("#phone").val()
+    };
+    console.log(formData);
+    $.ajax({
+        url: '@Url.Action("SaveChanges", "CustomerAccount")',
+        type: 'POST',
+        data: formData,
+        success: function (response) {
+            if (response.success) {
+                Toastify({
+                    text: response.message,
+                    duration: 1500,
+                    gravity: "top",
+                    position: 'right',
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
+                disableInputs();
+            } else {
+                Toastify({
+                    text: "Đã xảy ra lỗi: " + response.message,
+                    duration: 1500,
+                    gravity: "top",
+                    position: 'right',
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+            }
+        },
+        error: function () {
+            alert('Đã xảy ra lỗi khi lưu thông tin.');
+        }
+    });
+}
+</script>

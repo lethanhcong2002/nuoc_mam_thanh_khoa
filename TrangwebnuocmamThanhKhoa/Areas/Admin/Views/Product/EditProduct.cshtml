@@ -1,0 +1,124 @@
+﻿@model TrangwebnuocmamThanhKhoa.Models.Product
+
+@{
+    ViewBag.Title = "EditProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3>Chỉnh sửa sản phẩm</h3>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, "Tên", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, "Mô tả sản phẩm", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea name="NoiDung" id="noiDung" class="form-control">@Model.Status</textarea>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            @Html.LabelFor(model => model.CreateAt,"Ngày tạo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreateAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.CreateAt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MetaTitle,"Title", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MetaTitle, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.MetaTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SaleOff,"Giảm giá", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SaleOff, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SaleOff, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Images, "Hình ảnh ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">
+                <button type="button" class="btn btn-success" onclick="OpenCkFinder()">Chọn Ảnh</button>
+                <button type="button" class="btn btn-danger" onclick="ClearImages()">Xóa Ảnh</button>
+            </label>
+            <div class="col-md-10">
+                <input type="text" name="HinhAnhThumbNail" class="form-control" value="@Model.Images" style="position:fixed" />
+                <div id="selectedImages" style="margin-top: 10px;"></div>
+            </div>
+            <div class="col-md-10">
+                <h6 style="font-weight:bold;color:red">Lưu ý ảnh được đặt làm tiêu đề phải được chọn đầu tiên !</h6>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a class="btn btn-warning" href="@Url.Action("EditCategory", new { id = Model.CategoryId })">Trở về</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section scripts{
+    <script>
+        CKEDITOR.replace("noiDung");
+
+        function OpenCkFinder() {
+            var finder = new CKFinder();
+            finder.selectActionFunction = SetUrlHinhAnh;
+            finder.popup();
+        }
+
+        function SetUrlHinhAnh(fileUrl) {
+            var currentImages = $('input[name=HinhAnhThumbNail]').val();
+            if (currentImages) {
+                currentImages += ';' + fileUrl;
+            } else {
+                currentImages = fileUrl;
+            }
+            $('input[name=HinhAnhThumbNail]').val(currentImages);
+            DisplaySelectedImages();
+        }
+
+        function DisplaySelectedImages() {
+            var imageUrls = $('input[name=HinhAnhThumbNail]').val().split(';');
+            var imageContainer = $('#selectedImages');
+            imageContainer.empty();
+            imageUrls.forEach(function (url) {
+                var img = $('<img>').attr('src', url).css('max-width', '100px').css('margin', '5px');
+                imageContainer.append(img);
+            });
+        }
+
+        function ClearImages() {
+            $('input[name=HinhAnhThumbNail]').val('');
+            $('#selectedImages').empty();
+        }
+
+        // Display images on page load
+        $(document).ready(function () {
+            DisplaySelectedImages();
+        });
+    </script>
+}

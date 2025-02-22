@@ -1,0 +1,348 @@
+﻿@using TrangwebnuocmamThanhKhoa.Models;
+@{
+    ViewBag.Title = "ShoppingCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = Session["User"] as User;
+}
+
+<style>
+    .information-cart {
+        margin-bottom: 15px;
+    }
+
+    .input-cart {
+        margin-bottom: 10px;
+    }
+
+    .btn-cart {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="card custom-shadow" data-show-loading-modal="true">
+    <div class="row p-4 w-100">
+        <div class="col-lg-7">
+            <div>GIỎ HÀNG CỦA BẠN</div>
+            <div class="bottom-divider"></div>
+            <!-- Bảng sản phẩm -->
+            <div class="table-responsive">
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Loại</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-items">
+                        <!-- Nội dung giỏ hàng sẽ được chèn vào đây -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Dòng tổng tiền -->
+            <div class="bottom-divider mt-3"></div>
+            <div class="total-section mt-3">
+                <div class="d-flex justify-content-between">
+                    <span>Tổng tiền</span>
+                    <span id="total-price">$0.00</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 divider">
+            <!-- Nội dung của vùng bên phải -->
+            <div class="section-cart">
+                <div>THÔNG TIN GIAO HÀNG</div>
+                <div class="bottom-divider mb-3"></div>
+                <div class="information-cart">
+                    <div class="row w-100">
+                        <div class="input-cart col-md-6 padding-10">
+                            <input type="text" class="form-control text-sm" id="fullname" name="dataOrder[fullname]" placeholder="Họ tên" value="" required>
+                            <div id="fullname-error" class="text-danger">Vui lòng nhập họ và tên</div>
+                        </div>
+                        <div class="input-cart col-md-6 padding-10">
+                            <input type="number" class="form-control text-sm" id="phone" name="dataOrder[phone]" placeholder="Số điện thoại" value="" required>
+                            <div id="phone-error" class="text-danger">Vui lòng nhập số điện thoại</div>
+                        </div>
+                    </div>
+                    <div class="row w-100">
+                        <div class="input-cart col-md-4 padding-10">
+                            <select class="select-city-cart custom-select text-sm form-select" required id="tinh" name="dataOrder[city]">
+                                <option value="">Tỉnh/thành phố</option>
+                            </select>
+                            <div id="tinh-error" class="text-danger">Vui lòng chọn tỉnh thành</div>
+                        </div>
+                        <div class="input-cart col-md-4 padding-10">
+                            <select class="select-district-cart select-district form-select custom-select text-sm" required id="quan" name="dataOrder[district]">
+                                <option value="">Quận/huyện</option>
+                            </select>
+                            <div id="quan-error" class="text-danger">Vui lòng chọn quận huyện</div>
+                        </div>
+                        <div class="input-cart col-md-4 padding-10">
+                            <select class="select-ward-cart select-ward custom-select form-select text-sm" required id="phuong" name="dataOrder[ward]">
+                                <option value="">Phường/xã</option>
+                            </select>
+                            <div id="phuong-error" class="text-danger">Vui lòng chọn phường xã</div>
+                        </div>
+                    </div>
+                    <div class="row w-100">
+                        <div class="input-cart">
+                            <input type="text" class="form-control text-sm" id="address" name="dataOrder[address]" placeholder="Địa chỉ" value="" required>
+                            <div id="address-error" class="text-danger">Vui lòng nhập địa chỉ</div>
+                        </div>
+                    </div>
+                    <div class="row w-100">
+                        <div class="input-cart">
+                            <textarea class="form-control text-sm" id="requirements" name="dataOrder[requirements]" placeholder="Yêu cầu khác (không bắt buộc)"></textarea>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn-cart btn btn-primary w-100 btn-block" name="thanhtoan" value="Thanh toán">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".text-danger").hide();
+        var notificationUrl = '@Url.Action("Notification", "Home")';
+
+        var user = @Html.Raw(Json.Encode(user));
+        if (user) {
+            $("#fullname").val(user.Name || '');
+            $("#phone").val(user.Phone || '');
+            $("#address").val(user.Address || '');
+            $("#tinh, #quan, #phuong").attr("disabled", true);
+        }
+
+        $(".btn-cart").on("click", function () {
+            let cartItems = [];
+            $("#cart-items tr").each(function () {
+                let item = {
+                    ProductId: $(this).data("id"),
+                    ProductName: $(this).find("td:eq(0)").text().trim(),
+                    PLName: $(this).find("td:eq(1)").text().trim(),
+                    Quantity: parseInt($(this).find("input.quantity-input").val().trim()),
+                    ProductPrice: parseFloat($(this).find("td:eq(3)").data("price")),
+                };
+                cartItems.push(item);
+            });
+
+            let formData = {
+                Fullname: $("#fullname").val().trim(),
+                Phone: $("#phone").val().trim(),
+                Address: $("#address").val().trim(),
+                Requirements: $("#requirements").val().trim(),
+            };
+
+            $(".text-danger").hide();
+
+            let hasError = false;
+
+            if (!formData.Fullname) {
+                $("#fullname-error").show();
+                hasError = true;
+            }
+            if (!formData.Phone) {
+                $("#phone-error").show();
+                hasError = true;
+            }
+            if (!formData.Address) {
+                $("#address-error").show();
+                hasError = true;
+            }
+            if (cartItems.length === 0) {
+                alert("Giỏ hàng của bạn đang trống.");
+                hasError = true;
+            }
+
+            if (!user) {
+                const city = $("#tinh").val();
+                const district = $("#quan").val();
+                const ward = $("#phuong").val();
+
+                let hasError = false;
+
+                if (!city) {
+                    $("#tinh-error").show();
+                    hasError = true;
+                } else {
+                    $("#tinh-error").hide();
+                }
+
+                if (!district || district === "") {
+                    $("#quan-error").show();
+                    hasError = true;
+                } else {
+                    $("#quan-error").hide();
+                }
+
+                if (!ward || ward === "") {
+                    $("#phuong-error").show();
+                    hasError = true;
+                } else {
+                    $("#phuong-error").hide();
+                }
+
+                if (!hasError) {
+                    if (formData.Address) {
+                        formData.Address += `, ${$("#phuong option:selected").text()}, ${$("#quan option:selected").text()}, ${$("#tinh option:selected").text()}`;
+                    } else {
+                        formData.Address = `${$("#phuong option:selected").text()}, ${$("#quan option:selected").text()}, ${$("#tinh option:selected").text()}`;
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+            if (hasError) {
+                return;
+            }
+
+            let cartItemsString = cartItems.map(function (item, index) {
+                return `CartItems[${index}].ProductId=${item.ProductId}&CartItems[${index}].ProductName=${encodeURIComponent(item.ProductName)}&CartItems[${index}].PLName=${encodeURIComponent(item.PLName)}&CartItems[${index}].Quantity=${item.Quantity}&CartItems[${index}].ProductPrice=${item.ProductPrice}`;
+            }).join('&');
+
+            let dataToSend = $.param(formData) + '&' + cartItemsString;
+
+            $.ajax({
+                url: '/Cart/SubmitOrder',
+                type: 'POST',
+                data: dataToSend,
+                beforeSend: function () {
+                    $("#loadingModal").modal('show');
+                },
+                success: function (response) {
+                    if (response.success) {
+                        if (!user || user.Id) {
+                            localStorage.removeItem('cart');
+                        }
+                        window.location.href = notificationUrl;
+                    } else {
+                        alert("Có lỗi xảy ra: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra khi gửi dữ liệu.");
+                },
+                complete: function () {
+                    $("#loadingModal").modal('hide');
+                }
+            });
+        });
+
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function loadCartItems(cart, source) {
+            const cartItemsContainer = $('#cart-items');
+            cartItemsContainer.empty();
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                var displayPrice = item.ProductPrice * item.Quantity;
+                total += displayPrice;
+
+                cartItemsContainer.append(`
+                    <tr data-id="${item.ProductId}" data-plname="${item.PLName}">
+                        <td>
+                            ${item.ProductName}
+                            <a class="delete-icon" data-id="${item.ProductId}" data-plname="${item.PLName}">
+                                <i class="la la-trash"></i>
+                            </a>
+                        </td>
+                        <td>${item.PLName}</td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button class="btn-minus" data-id="${item.ProductId}" data-plname="${item.PLName}" data-customerid="${item.CustomerId}">-</button>
+                                <input type="text" class="quantity-input" data-id="${item.ProductId}" data-plname="${item.PLName}" value="${item.Quantity}" readonly>
+                                <button class="btn-plus" data-id="${item.ProductId}" data-plname="${item.PLName}" data-customerid="${item.CustomerId}">+</button>
+                            </div>
+                        </td>
+                        <td data-price="${item.ProductPrice}">${formatPrice(displayPrice)} VNĐ</td>
+                    </tr>
+                `);
+            });
+
+            $('#total-price').text(formatPrice(total) + " VNĐ");
+            console.log(`Loaded ${cart.length} items from ${source}`);
+        }
+
+        function updateCart(productId, customerId, plName, action) {
+            const data = {
+                userId: customerId,
+                productId: productId,
+                plName: plName,
+                action: action
+            };
+
+            if (user) {
+                fetch(`/Cart/UpdateCartItem`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    loadCartItems(data, 'Database');
+                })
+                .catch(error => console.error('Error updating cart item:', error));
+            } else {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const productIndex = cart.findIndex(product => product.ProductId === productId && product.PLName === plName);
+                if (productIndex > -1) {
+                    if (action === 'increment') {
+                        cart[productIndex].Quantity++;
+                    } else if (action === 'decrement' && cart[productIndex].Quantity > 1) {
+                        cart[productIndex].Quantity--;
+                    } else if (action === 'delete') {
+                        cart.splice(productIndex, 1);
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    loadCartItems(cart, 'LocalStorage');
+                }
+            }
+        }
+
+        if (user) {
+            fetch(`/Cart/GetCartItems?userId=${user.Id}`)
+                .then(response => response.json())
+                .then(data => {
+                    loadCartItems(data, 'Database');
+                })
+                .catch(error => console.error('Error fetching cart items:', error));
+        } else {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            loadCartItems(cart, 'LocalStorage');
+        }
+
+        $(document).on('click', '.btn-plus', function () {
+            const productId = $(this).data('id');
+            const customerId = $(this).data('customerid');
+            const plName = $(this).data('plname');
+            updateCart(productId, customerId, plName, 'increment');
+        });
+
+        $(document).on('click', '.btn-minus', function () {
+            const productId = $(this).data('id');
+            const customerId = $(this).data('customerid');
+            const plName = $(this).data('plname');
+            updateCart(productId, customerId, plName, 'decrement');
+        });
+
+        $(document).on('click', '.delete-icon', function () {
+            const productId = $(this).data('id');
+            const customerId = user ? user.Id : null;
+            const plName = $(this).data('plname');
+            updateCart(productId, customerId, plName, 'delete');
+        });
+    });
+</script>
+<link href="~/MyCss/shoppingCart.css" rel="stylesheet" />
+<script src="~/MyScript/api_city.js"></script>

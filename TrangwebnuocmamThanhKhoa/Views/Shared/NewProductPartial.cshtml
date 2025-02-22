@@ -1,0 +1,29 @@
+﻿<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <h5 class="title-header">
+        SẢN PHẨM MỚI
+        <span class="line"></span>
+    </h5>
+    @foreach (var item in Model)
+    {
+        <div class="row new-product" data-id="@item.Id" data-metatitle="@item.MetaTitle" onclick="newToDetail(this)">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                <img src="@item.Images" class="new-product-image" />
+            </div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                <span class="new-product-name">
+                    @item.Name
+                </span>
+                <p class="new-product-price">@item.Price.ToString("N0").Replace(",", ".") VNĐ</p>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    function newToDetail(element) {
+        var productId = element.getAttribute("data-id");
+        var MetaTitle = element.getAttribute("data-metatitle");
+        var url = '@Url.Action("ProductDetail", "Products", new { metatitle = "__metatitle__", productId = "__productid__" }, null)';
+        url = url.replace("__metatitle__", MetaTitle).replace("__productid__", productId);
+        window.location.href = url;
+    }
+</script>

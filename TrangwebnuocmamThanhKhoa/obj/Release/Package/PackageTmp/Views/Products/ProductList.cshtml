@@ -1,0 +1,119 @@
+﻿@model IEnumerable<TrangwebnuocmamThanhKhoa.Models.PDDetail>
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+<main>
+    <div class="hero-section">
+        <img class="banner-image" src="~/Image/Banner_Product.jpg" />
+    </div>
+    <div class="container-fluid">
+        <div class="row container-content">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                @Html.Action("NewProducts", "Products")
+                @Html.Action("Categories", "Products")
+                @Html.Partial("ProductPricePartial")
+            </div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                <h5 class="title-header">
+                    DANH SÁCH SẢN PHẨM
+                    <span class="line"></span>
+                </h5>
+                @Html.Partial("SortProductPartial")
+                @*----------------List Product---------------*@
+                <div id="product-list-container">
+                    @Html.Partial("ProductListPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<link href="~/MyCss/Products/product.css" rel="stylesheet" />
+<script src="~/MyScript/listPricePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#listprice1').val(0);
+        $('#listprice2').val(0);
+
+        //function adjustColumns() {
+        //    var productList = document.getElementById('product-list');
+        //    var productCards = productList.getElementsByClassName('product-card');
+        //    var numberOfProducts = productCards.length;
+
+        //    for (var i = 0; i < productCards.length; i++) {
+        //        productCards[i].classList.remove('col-lg-4', 'col-lg-6', 'col-lg-3');
+        //    }
+
+        //    if (numberOfProducts <= 1) {
+        //        for (var i = 0; i < productCards.length; i++) {
+        //            productCards[i].classList.add('col-lg-4'); 
+        //        }
+        //    } else if (numberOfProducts <= 2) {
+        //        for (var i = 0; i < productCards.length; i++) {
+        //            productCards[i].classList.add('col-lg-6'); 
+        //        }
+        //    } else {
+        //        for (var i = 0; i < productCards.length; i++) {
+        //            productCards[i].classList.add('col-lg-4'); 
+        //        }
+        //    }
+        //}
+
+        //document.addEventListener('DOMContentLoaded', function () {
+        //    adjustColumns();
+        //});
+
+        //document.addEventListener('ajaxComplete', function () {
+        //    adjustColumns();
+        //});
+
+        function filterAndSortProducts(page = 1) {
+            var sortBy = $('#sort-by').val();
+            var priceOrder = $('#price-order').val();
+            var keyword = $('#search-keyword').val();
+            var price1 = $('#listprice1').val();
+            var price2 = $('#listprice2').val();
+            var limit = 6;
+
+            $.ajax({
+                url: '@Url.Action("FilterAndSortProducts", "Products")',
+                type: 'GET',
+                data: {
+                    sortBy: sortBy,
+                    priceOrder: priceOrder,
+                    keyword: keyword,
+                    price1: price1,
+                    price2: price2,
+                    page: page,
+                    limit: limit
+                },
+                success: function (result) {
+                    $("#product-list-container").html(result);
+                    adjustColumns();
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + ' ' + error);
+                }
+            });
+        }
+
+        $('#sort-by').on('change', function () { filterAndSortProducts(); });
+        $('#price-order').on('change', function () { filterAndSortProducts(); });
+        $('.btn-product-search').on('click', function () { filterAndSortProducts(); });
+
+        window.changePage = function (page) {
+            filterAndSortProducts(page);
+        }
+
+        window.applyPriceFilter = function() {
+            filterAndSortProducts();
+        }
+
+        filterAndSortProducts();
+    });
+</script>
+
+           
+
+

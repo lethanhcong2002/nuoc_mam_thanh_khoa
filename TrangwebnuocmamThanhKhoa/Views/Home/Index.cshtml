@@ -1,0 +1,143 @@
+﻿@model IEnumerable<TrangwebnuocmamThanhKhoa.Models.PDDetail>
+@{
+    int productsPerRow = 4;
+    var products = Model as TrangwebnuocmamThanhKhoa.Models.PDDetail;
+    var productList = Model.ToList();
+    int totalProducts = productList.Count;
+    int rows = (totalProducts + productsPerRow - 1) / productsPerRow;
+    ViewBag.Title = "Home Page";
+}
+<link href="~/MyCss/IndexStyle.css" rel="stylesheet" />
+<style>
+    .slideshow-container {
+        max-width: 100%;
+        position: relative;
+        margin: auto;
+    }
+
+    .mySlides > img {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        border: solid 1px #ddd;
+    }
+
+    .dot {
+        height: 13px;
+        width: 13px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+    }
+
+    .activedot {
+        background-color: #717171;
+    }
+
+    /* Fading animation */
+    .fade-slideshow {
+        -webkit-animation-name: fade;
+        -webkit-animation-duration: 4.5s;
+        animation-name: fade;
+        animation-duration: 4.5s;
+    }
+
+    @@-webkit-keyframes fade {
+        from {
+            opacity: .4
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+
+    @@keyframes fade {
+        from {
+            opacity: .4
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+</style>
+
+<main>
+    <div class="slideshow-container col-sm-12">
+        <div class="mySlides fade-slideshow">
+            <img src="~/Image/Banner_Home.jpg">
+        </div>
+
+        <div class="mySlides fade-slideshow">
+            <img src="~/Image/Banner_Product.jpg">
+        </div>
+    </div>
+    <br>
+    <div style="text-align:center">
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <div class="container">
+        <h3 style="text-align:center; padding:10px; margin-top: 10px;color:red;font-weight:bold;">CÁC SẢN PHẨM NỔI BẬT CỦA THÀNH KHOA</h3>
+        @for (int row = 0; row < rows; row++)
+        {
+            <div class="row list-product">
+                @for (int col = 0; col < productsPerRow; col++)
+                {
+                    int index = row * productsPerRow + col;
+                    if (index < totalProducts)
+                    {
+                        var item = productList[index];
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 product-card">
+                            <div class="product">
+                                <img src="@item.Images" alt="@item.Name" class="product-image">
+                                <h6 class="product-name text-center">@item.Name</h6>
+                                <p class="product-price text-center">@item.Price.ToString("N0").Replace(",", ".") VNĐ</p>
+                                <div class="button-container">
+                                    <button onclick="redirectToDetail('@item.Id', '@item.MetaTitle')">Xem chi tiết</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 product-card empty-product">
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</main>
+
+<script>
+    var slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" activedot", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " activedot";
+        setTimeout(showSlides, 4500);
+    }
+
+    function redirectToDetail(Id, MetaTitle) {
+        var url = '@Url.Action("ProductDetail", "Products", new { metatitle = "__metatitle__", productId = "__productid__" }, null)';
+        url = url.replace("__metatitle__", MetaTitle).replace("__productid__", Id);
+        window.location.href = url;
+    }
+</script>
